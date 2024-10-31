@@ -1,7 +1,10 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
+
+# Ensure the drone module can be imported
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from drone import Drone
 
 class TestDrone(unittest.TestCase):
@@ -39,5 +42,14 @@ class TestDrone(unittest.TestCase):
         drone = Drone()
         self.assertEqual(drone.status(), "Drone is not in the air.")
 
+    def test_save_load_state(self):
+        drone = Drone()
+        drone.launch(1, 1, "SOUTH")
+        drone.save_state()
+        new_drone = Drone()
+        new_drone.load_state()
+        self.assertEqual(new_drone.status(), (1, 1, "SOUTH"))
+
 if __name__ == '__main__':
-    unittest.main()
+    # Set verbosity to 2 to show detailed output
+    unittest.main(verbosity=2)
