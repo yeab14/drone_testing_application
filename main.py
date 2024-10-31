@@ -1,27 +1,16 @@
-# main.py
-
-from commands import process_commands
+from drone import Drone
 
 def main():
-    commands = [
-        "LAUNCH 0,0,SOUTH",
-        "FLY",
-        "STATUS",
-        "LAUNCH 0,0,NORTH",
-        "LEFT",
-        "STATUS",
-        "LAUNCH 1,2,EAST",
-        "FLY",
-        "FLY",
-        "STATUS",
-        "LEFT",
-        "FLY",
-        "STATUS"
-    ]
+    drone = Drone()
     
-    outputs = process_commands(commands)
-    for output in outputs:
-        print(output)
+    while True:
+        command = input("Enter command (or 'exit' to quit): ").strip()
+        if command.lower() == 'exit':
+            break
+        
+        result = drone.execute_command(command)
+        if result is not None:
+            print(result)
 
 if __name__ == "__main__":
     main()
