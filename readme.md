@@ -98,9 +98,23 @@ python -m unittest test_drone.TestDrone.test_save_load_state
 python -m unittest test_drone.TestDrone.test_status_when_not_in_air
 ```
 
-## 8. Test Status
+## 8. Test Status (`test_status`)
 
-**Description**
+**Description**: Verifies that the status command correctly reports the drone's position and direction after it has been launched.
+**Assertion**:Ensures that the status of the drone matches the expected coordinates and direction after launching it.
+**Command**: 
+``` bash 
+ python -m unittest test_drone.TestDrone.test_status
+```
+
+## 9. Test Ignore Invalid Commands (`test_ignore_invalid_commands`) 
+
+**Description**: Validates that the drone ignores commands before launch and reports an appropriate message.
+**Assertion**: Ensures that all commands (FLY, LEFT, RIGHT, STATUS) return a message indicating the drone must first be launched.
+**Command**: 
+``` bash 
+python -m unittest test_drone.TestDrone.test_ignore_invalid_commands
+```
 
 
 ## Conclusion
