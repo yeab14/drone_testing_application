@@ -4,11 +4,9 @@ import unittest
 
 # Ensure the drone module can be imported
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from drone import Drone
 
 class TestDrone(unittest.TestCase):
-
     def test_launch_valid(self):
         drone = Drone()
         drone.launch(0, 0, "NORTH")
@@ -49,6 +47,29 @@ class TestDrone(unittest.TestCase):
         new_drone = Drone()
         new_drone.load_state()
         self.assertEqual(new_drone.status(), (1, 1, "SOUTH"))
+
+    # New Test: Verifying STATUS command output
+    def test_status(self):
+        drone = Drone()
+        drone.launch(2, 2, "WEST")
+        result = drone.status()
+        expected = (2, 2, "WEST")
+        self.assertEqual(result, expected)
+        print(f"Test Status Result: {result}") 
+
+    def test_ignore_invalid_commands(self):
+        drone = Drone()
+        # Before launch, any command should be ignored
+        self.assertEqual(drone.execute_command("FLY"), "Drone is not in the air. Please launch the drone first.")
+        self.assertEqual(drone.execute_command("LEFT"), "Drone is not in the air. Please launch the drone first.")
+        self.assertEqual(drone.execute_command("RIGHT"), "Drone is not in the air. Please launch the drone first.")
+        self.assertEqual(drone.execute_command("STATUS"), "Drone is not in the air. Please launch the drone first.")
+        # Launch the drone
+        drone.execute_command("LAUNCH 0,0,NORTH")
+        # Now the drone should respond to commands
+        self.assertEqual(drone.execute_command("FLY"), None)  # No output expected, just move
+        self.assertEqual(drone.execute_command("LEFT"), None)  # Rotate left
+        self.assertEqual(drone.execute_command("STATUS"), (0, 1, "WEST"))  # After left, it should face WEST
 
 if __name__ == '__main__':
     # Set verbosity to 2 to show detailed output
